@@ -1,5 +1,7 @@
 package day2_part2;
 
+import java.util.ArrayList;
+
 /**
  * Created by Vita on 08.10.2016.
  */
@@ -7,7 +9,7 @@ public class TestStudent {
     public static void main(String[] args) {
 
         Student student = new BudgetStudent("Nick", "Smith", 6, 560);
-        Student student1 = new BudgetStudent("Mike", "Smith", 7, 560);
+        Student student1 = new BudgetStudent("Nick", "North", 7, 560);
         Student student2 = new BudgetStudent("Bill", "Smith", 10, 780);
         Student student3 = new BudgetStudent("Liza", "Smith", 6, 780);
 
@@ -65,11 +67,24 @@ public class TestStudent {
         System.out.println();
 
         group.showStudents();
-        group.deleteStudent(student1);
+        group.deleteStudent(student2);
 
         System.out.println();
 
         group.showStudents();
+
+        System.out.println("Sorting: ");
+
+        group.sortingStudentByName(new NameComparator());
+        group.showStudents();
+
+        System.out.println();
+
+        ArrayList<Student> arrayList;
+        arrayList = group.searchStudentByName(student);
+        for(Student stud : arrayList) {
+            System.out.println(stud.toString());
+        }
 
     }
 }

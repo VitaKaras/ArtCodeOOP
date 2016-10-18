@@ -1,5 +1,6 @@
 package day2_part2;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -21,38 +22,61 @@ public class Group {
     }
 
     public boolean addStudent(Student student) {
-        if (contains(student) || studentCount == students.length || student == null) return false;
+        if (studentCount == students.length || student == null || contains(student)) return false;
 
-        students[studentCount] = student;
-        studentCount++;
+        students[studentCount++] = student;
         return true;
     }
 
     public boolean deleteStudent(Student student) {
-        if (students[0] == null) return false;
-        int index = -1;
+        if (student == null) return false;
+
         for (int i = 0; i < studentCount; i++) {
-            if (students[i].equals(student))
-                index = i;
-        }
-        if (index >= 0) {
-            for (int i = index; i < studentCount - 1; i++) {
-                students[i] = students[i + 1];
+            if (student.equals(students[i])) {
+                System.arraycopy(students, i + 1, students, i, studentCount - i - 1);
+                students[--studentCount] = null;
+                return true;
             }
-            System.arraycopy(students, 0, students, 0, students.length - 1);
-            studentCount--;
-            return true;
         }
         return false;
+
+    }
+
+    public ArrayList<Student> searchStudentByName(Student student){
+        ArrayList <Student> arrayList = new ArrayList<>();
+        for(int i=0; i<studentCount; i++){
+            if(student.getName().equals(students[i].getName()))
+                arrayList.add(students[i]);
+        }
+        return arrayList;
+    }
+
+    public void sortingStudentByName(NameComparator nameComparator){
+        for (int i = 0; i < studentCount - 1; i++) {
+            boolean swapped = false;
+            for (int j = 0; j < studentCount- i - 1; j++) {
+                if (students[j].compareTo(students[j + 1]) > 0) {
+                    Student tmp = students[j];
+                    students[j] = students[j + 1];
+                    students[j + 1] = tmp;
+                    swapped = true;
+                }
+            }
+
+            if(!swapped)
+                break;
+        }
     }
 
     public boolean equals(Group gr) {
+        if(gr == null) return false;
+
         if (this.getName().equals(gr.getName())) return true;
         else return false;
     }
 
     public boolean contains(Student student) {
-        if (student != null && students[0] != null) {
+        if (student != null) {
             for (int i = 0; i < studentCount; i++) {
                 if (students[i].equals(student))
                     return true;

@@ -30,7 +30,7 @@ public class University {
     }
 
     public boolean contains(Group group) {
-        if (group != null && groups[0] != null) {
+        if (group != null) {
             for (int i = 0; i < groupCount; i++) {
                 if (groups[i].equals(group))
                     return true;
@@ -40,27 +40,21 @@ public class University {
     }
 
     public boolean addGroup(Group group) {
-        if (contains(group) || groupCount == groups.length || group == null) return false;
+        if (groupCount == groups.length || group == null || contains(group)) return false;
 
-        groups[groupCount] = group;
-        groupCount++;
+        groups[groupCount++] = group;
         return true;
     }
 
     public boolean deleteGroup(Group group) {
-        if (groups[0] == null) return false;
-        int index = -1;
+        if (groups == null) return false;
+
         for (int i = 0; i < groupCount; i++) {
-            if (groups[i].equals(group))
-                index = i;
-        }
-        if (index >= 0) {
-            for (int i = index; i < groupCount; i++) {
-                groups[i] = groups[i + 1];
+            if (group.equals(groups[i])) {
+                System.arraycopy(groups, i + 1, groups, i, groupCount - i - 1);
+                groups[--groupCount] = null;
+                return true;
             }
-            System.arraycopy(groups, 0, groups, 0, groups.length - 1);
-            groupCount--;
-            return true;
         }
         return false;
     }
