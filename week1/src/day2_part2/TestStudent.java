@@ -11,7 +11,7 @@ public class TestStudent {
         Student student = new BudgetStudent("Nick", "Smith", 6, 560);
         Student student1 = new BudgetStudent("Nick", "North", 7, 560);
         Student student2 = new BudgetStudent("Bill", "Smith", 10, 780);
-        Student student3 = new BudgetStudent("Liza", "Smith", 6, 780);
+        Student student3 = new BudgetStudent("Liza", "Smith", 8, 780);
 
         Student student4 = new ContractStudent("Vita", "Smith", 8, 2);
         Student student5 = new ContractStudent("Yura", "Smith", 8, 7);
@@ -76,6 +76,11 @@ public class TestStudent {
         System.out.println("Sorting: ");
 
         group.sort(new NameComparator());
+        group.showStudents();
+
+        System.out.println();
+
+        group.sort(new AverageMarkComparator());
         group.showStudents();
 
         System.out.println();

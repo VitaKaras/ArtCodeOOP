@@ -56,7 +56,7 @@ public class Group {
         for (int i = 0; i < studentCount - 1; i++) {
             boolean swapped = false;
             for (int j = 0; j < studentCount- i - 1; j++) {
-                if (students[j].compareTo(students[j + 1]) > 0) {
+                if (comparator.compare(students[j],students[j + 1]) > 0) {
                     Student tmp = students[j];
                     students[j] = students[j + 1];
                     students[j + 1] = tmp;

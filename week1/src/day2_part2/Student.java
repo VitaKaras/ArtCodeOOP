@@ -33,7 +33,6 @@ public class Student implements Comparable<Student>{
 
     @Override
     public int compareTo(Student student){
-        //if(!(object instanceof Student)) return ?;
         if(this.getName().compareTo(student.getName())>0){
             return 1;
         } else if(this.getName().compareTo(student.getName())<0) {

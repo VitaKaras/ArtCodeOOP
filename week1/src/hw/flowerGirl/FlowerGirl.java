@@ -41,7 +41,7 @@ public class FlowerGirl {
     public boolean searchFlower(int minStem, int maxStem) {
 
         for (int i = 0; i < flowerCount; i++) {
-            int stemSize = bouquet.getFlowers()[i].getStemSize();
+            int stemSize = bouquet.getFlowers()[i].stemSize;
             if (stemSize >= minStem && stemSize <= maxStem) {
                 System.out.println("Range (" + minStem + ";" + maxStem + "):" + bouquet.getFlowers()[i]);
                 return true;
@@ -79,11 +79,11 @@ public class FlowerGirl {
 
         flowerGirl.createBouquet(5);
 
-        flowerGirl.addFlower(new Peony(1, Flower.FreshnessLevel.FRESH));
-        flowerGirl.addFlower(new Peony(4, Flower.FreshnessLevel.FRESH));
-        flowerGirl.addFlower(new Rose(3, Flower.FreshnessLevel.lIMP));
-        flowerGirl.addFlower(new Rose(1, Flower.FreshnessLevel.lIMP));
-        flowerGirl.addFlower(new Daffodil(2, Flower.FreshnessLevel.lIMP));
+        flowerGirl.addFlower(new Peony(1, FreshnessLevel.FRESH));
+        flowerGirl.addFlower(new Peony(4, FreshnessLevel.FRESH));
+        flowerGirl.addFlower(new Rose(3, FreshnessLevel.LIMP));
+        flowerGirl.addFlower(new Rose(1, FreshnessLevel.LIMP));
+        flowerGirl.addFlower(new Daffodil(2, FreshnessLevel.LIMP));
 
         flowerGirl.addAccessory(new Ribbon(4, Color.BLUE));
         flowerGirl.addAccessory(new Cellophane(5, Color.COLORLESS));
@@ -99,6 +99,8 @@ public class FlowerGirl {
         System.out.println();
 
         flowerGirl.searchFlower(1, 3);
+
+        System.out.println("Price: "+flowerGirl.price());
 
     }
 }

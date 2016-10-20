@@ -15,7 +15,7 @@ public class Ribbon extends Accessory {
 
     @Override
     public double price() {
-        if (this.getSize() > 5)
+        if (this.size > 5)
             return 1.5;
         else return 1;
     }

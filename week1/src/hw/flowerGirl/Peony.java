@@ -9,7 +9,7 @@ public class Peony extends Flower {
         super(stemSize);
     }
 
-    public Peony(int stemSize, Flower.FreshnessLevel freshness) {
+    public Peony(int stemSize, FreshnessLevel freshness) {
         super(stemSize, freshness);
     }
 
