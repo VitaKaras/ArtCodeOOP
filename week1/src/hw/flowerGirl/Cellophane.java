@@ -3,7 +3,7 @@ package hw.flowerGirl;
 /**
  * Created by Vita on 18.10.2016.
  */
-public class Cellophane extends Accessory{
+public class Cellophane extends Accessory {
 
     public Cellophane(int size) {
         super(size);
@@ -15,7 +15,7 @@ public class Cellophane extends Accessory{
 
     @Override
     public double price() {
-        if(this.getColor()==Color.COLORLESS)
+        if (this.getColor() == Color.COLORLESS)
             return 1.29;
         else return 2;
     }

@@ -75,7 +75,7 @@ public class TestStudent {
 
         System.out.println("Sorting: ");
 
-        group.sortingStudentByName(new NameComparator());
+        group.sort(new NameComparator());
         group.showStudents();
 
         System.out.println();

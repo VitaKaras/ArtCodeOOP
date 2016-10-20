@@ -2,6 +2,7 @@ package day2_part2;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Comparator;
 
 /**
  * Created by Vita on 09.10.2016.
@@ -51,7 +52,7 @@ public class Group {
         return arrayList;
     }
 
-    public void sortingStudentByName(NameComparator nameComparator){
+    public void sort(Comparator <Student> comparator){
         for (int i = 0; i < studentCount - 1; i++) {
             boolean swapped = false;
             for (int j = 0; j < studentCount- i - 1; j++) {

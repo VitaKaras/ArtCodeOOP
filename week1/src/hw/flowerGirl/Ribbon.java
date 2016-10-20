@@ -3,7 +3,7 @@ package hw.flowerGirl;
 /**
  * Created by Vita on 18.10.2016.
  */
-public class Ribbon extends Accessory{
+public class Ribbon extends Accessory {
 
     public Ribbon(int size) {
         super(size);
@@ -15,7 +15,7 @@ public class Ribbon extends Accessory{
 
     @Override
     public double price() {
-        if(this.getSize()>5)
+        if (this.getSize() > 5)
             return 1.5;
         else return 1;
     }

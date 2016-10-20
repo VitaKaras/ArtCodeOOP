@@ -3,7 +3,7 @@ package hw.flowerGirl;
 /**
  * Created by Vita on 18.10.2016.
  */
-public class Daffodil extends Flower{
+public class Daffodil extends Flower {
 
     public Daffodil(int stemSize) {
         super(stemSize);
@@ -16,5 +16,10 @@ public class Daffodil extends Flower{
     @Override
     public double price() {
         return 7;
+    }
+
+    @Override
+    public String toString() {
+        return super.toString() + "(Daffodil)";
     }
 }

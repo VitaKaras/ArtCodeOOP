@@ -16,4 +16,9 @@ public class Rose extends Flower {
     public double price() {
         return 9;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "(Rose)";
+    }
 }

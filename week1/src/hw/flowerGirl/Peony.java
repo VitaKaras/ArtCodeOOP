@@ -17,4 +17,9 @@ public class Peony extends Flower {
     public double price() {
         return 7.5;
     }
+
+    @Override
+    public String toString() {
+        return super.toString() + "(Peony)";
+    }
 }

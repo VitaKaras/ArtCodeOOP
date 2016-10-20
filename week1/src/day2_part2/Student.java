@@ -3,7 +3,7 @@ package day2_part2;
 /**
  * Created by Vita on 08.10.2016.
  */
-public class Student implements Comparable{
+public class Student implements Comparable<Student>{
 
     private String name;
     private String surname;
@@ -32,19 +32,21 @@ public class Student implements Comparable{
     }
 
     @Override
-    public int compareTo(Object object){
-        Student stud = (Student)object;
-        if(this.getName().compareTo(stud.getName())>0){
+    public int compareTo(Student student){
+        //if(!(object instanceof Student)) return ?;
+        if(this.getName().compareTo(student.getName())>0){
             return 1;
-        } else if(this.getName().compareTo(stud.getName())<0) {
+        } else if(this.getName().compareTo(student.getName())<0) {
             return -1;
         }
         return 0;
     }
 
-    public boolean equals(Student student) {
-        if(student == null) return false;
+    @Override
+    public boolean equals(Object object) {
+        if(!(object instanceof Student) || object == null) return false;
 
+        Student student = (Student)object;
         if (this.getName().equals(student.getName()) && this.getSurname().equals(student.getSurname())) return true;
         else return false;
     }
