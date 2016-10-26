@@ -78,9 +78,9 @@ public class Test {
             System.out.println(issue);
         }
 
-        library.giveIssue(reader1,new Book("The Hunger Games", "Collins", 2008, Book.Genre.FICTION));
-        library.giveIssue(reader1,new Book("The Hunger Games", "Collins", 2008, Book.Genre.FICTION));
-        library.giveIssue(reader1, new Newspaper("Financial Times","Lionel Barber", 1888, Newspaper.Genre.FEATURE_ARTICLE));
+        library.giveIssue(reader1,hg);
+        library.giveIssue(reader1,sov);
+        library.giveIssue(reader1,hg);
 
         System.out.println();
         System.out.println("List of Vita`s issues ");

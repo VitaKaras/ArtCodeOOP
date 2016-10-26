@@ -6,9 +6,7 @@ import day2.myLibrary.dao.IssueDAO;
 import day2.myLibrary.dao.ReaderDAO;
 import day2.myLibrary.model.*;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 /**
  * Created by Vita on 24.10.2016.
@@ -19,10 +17,10 @@ public class Library {
 
     private String name;
     private List<Reader> readers;
-    private List<PeriodicalIssue> issues;
-    private List<Book> books = new ArrayList<>();
-    private List<Magazine> magazines = new ArrayList<>();
-    private List<Newspaper> newspapers = new ArrayList<>();
+    private Map<PeriodicalIssue, Integer> issues;
+    private Map<Book, Integer> books = new HashMap<>();
+    private Map<Magazine, Integer> magazines = new HashMap<>();
+    private Map<Newspaper, Integer> newspapers = new HashMap<>();
 
     private ReaderDAO readerDAO;
     private IssueDAO issueDAO;
@@ -42,19 +40,20 @@ public class Library {
     }
 
     public List<PeriodicalIssue> getIssues(PeriodicalIssue.SortType sortType) throws Exception {
-        return sortIssues(issues, sortType);
+        List<PeriodicalIssue> periodicalIssues = new ArrayList<>(issues.keySet());
+        return sortIssues(periodicalIssues, sortType);
     }
 
     public List<Book> getBooks() {
-        return books;
+        return new ArrayList<Book>(books.keySet());
     }
 
     public List<Magazine> getMagazines() {
-        return magazines;
+        return new ArrayList<Magazine>(magazines.keySet());
     }
 
     public List<Newspaper> getNewspapers() {
-        return newspapers;
+        return new ArrayList<Newspaper>(newspapers.keySet());
     }
 
     private List<PeriodicalIssue> sortIssues(List<PeriodicalIssue> issues, PeriodicalIssue.SortType sortType) throws Exception {
@@ -82,31 +81,37 @@ public class Library {
         return readers.add(reader);
     }
 
-
     public boolean addIssue(PeriodicalIssue issue) {
         if (issueDAO.addIssue(issue)) {
             if (issue instanceof Book) {
-                return books.add((Book) issue);
+                books.put((Book)issue, issues.get(issue));
+                return true;
             } else if (issue instanceof Magazine) {
-                return magazines.add((Magazine) issue);
+                magazines.put((Magazine) issue, issues.get(issue));
+                return true;
             } else if (issue instanceof Newspaper) {
-                return newspapers.add((Newspaper) issue);
+                newspapers.put((Newspaper)issue, issues.get(issue));
+                return true;
             }
         }
         return false;
+    }
+
+    private Map<Book, Integer> getBookMap(){
+        return books;
     }
 
     public List<PeriodicalIssue> getAvailableIssues(PeriodicalIssue.IssueType issueType, PeriodicalIssue.SortType sortType) throws Exception {
         List<PeriodicalIssue> returnIssues = new ArrayList<>();
         switch (issueType) {
             case BOOK:
-                returnIssues = sortIssues(new ArrayList<PeriodicalIssue>(books), sortType);
+                returnIssues = sortIssues(new ArrayList<PeriodicalIssue>(books.keySet()), sortType);
                 break;
             case MAGAZINE:
-                returnIssues = sortIssues(new ArrayList<PeriodicalIssue>(magazines), sortType);
+                returnIssues = sortIssues(new ArrayList<PeriodicalIssue>(magazines.keySet()), sortType);
                 break;
             case NEWSPAPER:
-                returnIssues = sortIssues(new ArrayList<PeriodicalIssue>(newspapers), sortType);
+                returnIssues = sortIssues(new ArrayList<PeriodicalIssue>(newspapers.keySet()), sortType);
                 break;
             default:
                 throw new IllegalArgumentException();
@@ -114,42 +119,26 @@ public class Library {
         return returnIssues;
     }
 
-    private boolean decreaseCountOfTheSameIssue(PeriodicalIssue issue) {
-        int index = issues.indexOf(issue);
-        if (issue instanceof Book) {
-            Book book = (Book)issues.get(index);
-            ((Book) issue).setCountTheSameBook(book.getCountTheSameBook());
-            ((Book) issue).decreaseCountOfTheSameIssue();
-            if (((Book) issue).getCountTheSameBook() == 0) {
-                issues.remove(issue);
-                books.remove(issue);
-            }
-        } else if (issue instanceof Magazine) {
-            Magazine magazine = (Magazine) issues.get(index);
-            ((Magazine) issue).setCountTheSameMagazine(magazine.getCountTheSameMagazine());
-            ((Magazine) issue).decreaseCountOfTheSameIssue();
-            if (((Magazine) issue).getCountTheSameMagazine() == 0) {
-                issues.remove(issue);
-                magazines.remove(issue);
-            }
-        } else if (issue instanceof Newspaper) {
-            Newspaper newspaper = (Newspaper) issues.get(index);
-            ((Newspaper) issue).setCountTheSameNewspaper(newspaper.getCountTheSameNewspaper());
-            ((Newspaper) issue).decreaseCountOfTheSameIssue();
-            if (((Newspaper) issue).getCountTheSameNewspaper() == 0) {
-                issues.remove(issue);
-                newspapers.remove(issue);
-            }
-        }
-        return true;
-    }
-
-
     public boolean giveIssue(Reader reader, PeriodicalIssue issue) {
         if (reader == null || issue == null || !readerDAO.findReader(reader) || !issueDAO.findIssue(issue))
             return false;
 
-        return reader.addIssue(issue) ? decreaseCountOfTheSameIssue(issue) : false;
+        if(reader.addIssue(issue)){
+            int countOfIssues =  issues.get(issue);
+            issues.put(issue, --countOfIssues);
+            if(countOfIssues == 0) {
+                if (issue instanceof Book) {
+                    books.remove((Book) issue);
+                } else if (issue instanceof Magazine) {
+                    magazines.remove((Magazine) issue);
+                } else if (issue instanceof Newspaper) {
+                    newspapers.remove((Newspaper) issue);
+                }
+                issues.remove(issue);
+                return true;
+            }
+        }
+        return false;
     }
 
     public List<PeriodicalIssue> getIssuesInAllReaders(PeriodicalIssue.SortType sortType) throws Exception {
@@ -176,22 +165,26 @@ public class Library {
         return true;
     }
 
-    public List<PeriodicalIssue> getIssuesByAuthor(String author, PeriodicalIssue.SortType sortType){
+    public List<PeriodicalIssue> getIssuesByAuthor(String author, PeriodicalIssue.SortType sortType) throws Exception {
         if(author == null) throw new NullPointerException();
 
         List<PeriodicalIssue> result = new ArrayList<>();
 
-        for(PeriodicalIssue issue : issues){
-            if(issue.getAuthor().equals(author))
+        List<PeriodicalIssue> periodicalIssues = this.getIssues(sortType);
+
+        for(PeriodicalIssue issue : periodicalIssues) {
+            if (issue.getAuthor().equals(author))
                 result.add(issue);
         }
         return result;
     }
 
-    public List<PeriodicalIssue> getIssuesByYear(int year, PeriodicalIssue.SortType sortType){
+    public List<PeriodicalIssue> getIssuesByYear(int year, PeriodicalIssue.SortType sortType) throws Exception {
         List<PeriodicalIssue> result = new ArrayList<>();
 
-        for(PeriodicalIssue issue : issues){
+        List<PeriodicalIssue> periodicalIssues = this.getIssues(sortType);
+
+        for(PeriodicalIssue issue : periodicalIssues){
             if(issue.getYear() == year)
                 result.add(issue);
         }
@@ -201,8 +194,10 @@ public class Library {
     public List<PeriodicalIssue> searchIssueByKeyWords(String word){
         if(word == null) throw new NullPointerException();
 
+        List<PeriodicalIssue> periodicalIssues = new ArrayList<>(issues.keySet());
+
         List<PeriodicalIssue> result = new ArrayList<>();
-        for(PeriodicalIssue issue : issues){
+        for(PeriodicalIssue issue : periodicalIssues){
             List<String> keyWords = issue.getKeyWords();
             if(keyWords != null) {
                 for (String keyword : keyWords) {

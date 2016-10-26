@@ -1,7 +1,9 @@
 package day2.myLibrary.database;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import day2.myLibrary.model.*;
 
@@ -11,12 +13,12 @@ import day2.myLibrary.model.*;
 public class LibraryDB {
 
     private static List<Reader> readers;
-    private static List<PeriodicalIssue> issues;
+    private static Map<PeriodicalIssue, Integer> issues;
     private static LibraryDB libraryDBInstance;
 
     private LibraryDB(){
         readers = new ArrayList<>();
-        issues = new ArrayList<>();
+        issues = new HashMap<>();
     }
 
     public static LibraryDB getInstance(){
@@ -38,7 +40,7 @@ public class LibraryDB {
     public boolean findIssue(PeriodicalIssue issue){
         if(issue == null || issues.isEmpty()) return false;
 
-        return issues.contains(issue);
+        return issues.containsKey(issue);
     }
 
     public boolean addReader(Reader reader){
@@ -52,24 +54,15 @@ public class LibraryDB {
         if(issue == null) return false;
 
         if(findIssue(issue)){
-            if(issue instanceof Book) {
-                ((Book) issue).increaseCountOfTheSameIssue();
-                issues.remove(issue);
-                issues.add(issue);
-            }
-            else if(issue instanceof Magazine) {
-                ((Magazine) issue).increaseCountOfTheSameIssue();
-                issues.remove(issue);
-                issues.add(issue);
-            }
-            else if(issue instanceof Newspaper) {
-                ((Newspaper) issue).increaseCountOfTheSameIssue();
-                issues.remove(issue);
-                issues.add(issue);
-            }
-        }else return issues.add(issue);
+                int countOfIssues =  issues.get(issue);
+                issues.put(issue, ++countOfIssues);
+        }else {
+            issues.put(issue, 1);
+            return true;
+        }
         return false;
     }
+
 
     public boolean deleteReader(Reader reader){
         if(reader == null || readers.isEmpty()) return false;
@@ -81,7 +74,7 @@ public class LibraryDB {
         return readers;
     }
 
-    public List<PeriodicalIssue> getIssues(){
+    public Map<PeriodicalIssue, Integer> getIssues(){
         return issues;
     }
 

@@ -3,7 +3,7 @@ package day2.myLibrary.dao;
 import day2.myLibrary.database.LibraryDB;
 import day2.myLibrary.model.PeriodicalIssue;
 
-import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Vita on 24.10.2016.
@@ -20,7 +20,7 @@ public class IssueDAO {
         return db.addIssue(issue);
     }
 
-    public List<PeriodicalIssue> getIssues(){
+    public Map<PeriodicalIssue, Integer> getIssues(){
         return db.getIssues();
     }
 
