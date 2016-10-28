@@ -1,12 +1,9 @@
-package main.java.myArrayList;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
+package main.java.myLists;
 
 /**
  * Created by Vita on 19.10.2016.
  */
-public class MyArrayList<T> {
+public class MyArrayList<T> implements MyList<T> {
     private int size;
     private T[] elements;
     private int capacity;
@@ -23,18 +20,22 @@ public class MyArrayList<T> {
         size = 0;
     }
 
+    @Override
     public int size() {
         return size;
     }
 
+    @Override
     public boolean isEmpty() {
         return size == 0;
     }
 
+    @Override
     public boolean contains(T o) {
         return indexOf(o) >= 0;
     }
 
+    @Override
     public boolean add(T element) {
 
         if (size == elements.length) {
@@ -58,19 +59,23 @@ public class MyArrayList<T> {
 
     }
 
+    @Override
     public boolean remove(T o) {
-        if (contains(o)) {
-            remove(indexOf(o));
+        int idx = indexOf(o);
+        if (idx >= 0) {
+            remove(idx);
             return true;
         }
         return false;
     }
 
+    @Override
     public void clear() {
         elements = (T[]) new Object[capacity];
         size = 0;
     }
 
+    @Override
     public T get(int index) {
         if ((index < 0 || index >= size()))
             throw new IndexOutOfBoundsException();
@@ -78,6 +83,7 @@ public class MyArrayList<T> {
         return elements[index];
     }
 
+    @Override
     public T set(int index, T element) {
         if ((index < 0 || index >= size()))
             throw new IndexOutOfBoundsException();
@@ -88,6 +94,7 @@ public class MyArrayList<T> {
         return previousElement;
     }
 
+    @Override
     public void add(int index, T element) {
         if (index < 0 || index > size()) {
             throw new IndexOutOfBoundsException();
@@ -96,7 +103,6 @@ public class MyArrayList<T> {
         if (size + 1 == elements.length) {
             growCapacity();
         }
-
 
 
         for (int i = size; i > index; i--) {
@@ -108,6 +114,7 @@ public class MyArrayList<T> {
 
     }
 
+    @Override
     public T remove(int index) {
         if ((index < 0 || index >= size())) {
             throw new IndexOutOfBoundsException();
@@ -115,15 +122,14 @@ public class MyArrayList<T> {
 
         T element = elements[index];
 
-        for (int i = index + 1; i < size; i++) {
-            elements[i - 1] = elements[i];
-        }
-
+        System.arraycopy(elements, index + 1, elements, index, elements.length - index - 1);
+        elements[elements.length - 1] = null;
         size--;
 
         return element;
     }
 
+    @Override
     public int indexOf(Object element) {
         if (element == null) {
             for (int i = 0; i < size; i++) {
@@ -132,13 +138,14 @@ public class MyArrayList<T> {
             }
         } else {
             for (int i = 0; i < size; i++) {
-                if (element.equals(elements[i])) //TODO
+                if (element.equals(elements[i]))
                     return i;
             }
         }
         return -1;
     }
 
+    @Override
     public int lastIndexOf(T element) {
         if (element == null) {
             for (int i = size; i < 0; i--) {
@@ -154,6 +161,7 @@ public class MyArrayList<T> {
         return -1;
     }
 
+    @Override
     public Object[] toArray() {
         Object[] array = new Object[size];
 
