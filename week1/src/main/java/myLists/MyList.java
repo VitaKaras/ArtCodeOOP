@@ -4,7 +4,7 @@ package main.java.myLists;
  * Created by Vita on 20.10.2016.
  */
 
-public interface MyList<T> {
+public interface MyList<T> extends Iterable<T>{
 
     boolean add(T o);
 

@@ -103,6 +103,11 @@ public abstract class ListTest {
         Assert.assertEquals(2, myList.size());
     }
 
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testRemoveElementByWrongIndex() {
+        myList.remove(-1);
+    }
+
     @Test
     public void testIndexOf() {
         myList.add("1");
@@ -132,6 +137,17 @@ public abstract class ListTest {
     }
 
     @Test
+    public void testRemoveObjectWhichDoesNotExist() {
+        myList.add("1");
+        myList.add("2");
+        myList.add("1");
+        myList.add("1");
+        myList.add("5");
+
+        Assert.assertEquals(false, myList.remove("6"));
+    }
+
+    @Test
     public void testClear() {
         myList.add("1");
         myList.add("2");
@@ -144,6 +160,15 @@ public abstract class ListTest {
     }
 
     @Test
+    public void testSize() {
+        myList.add("1");
+        myList.add("2");
+        myList.add("1");
+
+        Assert.assertEquals(3, myList.size());
+    }
+
+    @Test
     public void testGet() {
         myList.add("1");
         myList.add("2");
@@ -151,6 +176,11 @@ public abstract class ListTest {
 
         Assert.assertEquals("2", myList.get(1));
         Assert.assertEquals("1", myList.get(0));
+    }
+
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void testGetElementByWrongIndex() {
+        myList.get(-1);
     }
 
     @Test

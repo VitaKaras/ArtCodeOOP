@@ -1,5 +1,7 @@
 package main.java.myLists;
 
+import java.util.Iterator;
+
 /**
  * Created by Vita on 19.10.2016.
  */
@@ -123,8 +125,7 @@ public class MyArrayList<T> implements MyList<T> {
         T element = elements[index];
 
         System.arraycopy(elements, index + 1, elements, index, elements.length - index - 1);
-        elements[elements.length - 1] = null;
-        size--;
+        elements[size--] = null;
 
         return element;
     }
@@ -169,5 +170,10 @@ public class MyArrayList<T> implements MyList<T> {
             array[i] = elements[i];
         }
         return array;
+    }
+
+    @Override
+    public Iterator<T> iterator() {
+        return null;
     }
 }
