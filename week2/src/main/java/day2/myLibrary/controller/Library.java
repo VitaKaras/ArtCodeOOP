@@ -78,6 +78,7 @@ public class Library {
     }
 
     public boolean addReader(Reader reader) {
+        if(readers.contains(reader)) return false;
         return readers.add(reader);
     }
 

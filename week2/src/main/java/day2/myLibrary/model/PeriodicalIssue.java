@@ -49,6 +49,15 @@ public abstract class PeriodicalIssue {
     }
 
     @Override
+    public int hashCode() {
+        int result = 0;
+        result = 31*result + year;
+        result = 31*result + (name != null ? name.hashCode() : 0);
+        result = 31*result + (author !=null ? author.hashCode() : 0);
+        return result;
+    }
+
+    @Override
     public String toString() {
         return "PeriodicalIssue{" +
                 "name='" + name + '\'' +
@@ -67,5 +76,7 @@ public abstract class PeriodicalIssue {
         return keyWords.add(word);
     }
 
-
+    public final String info(){
+        return "Periodical Issue in Library";
+    }
 }
